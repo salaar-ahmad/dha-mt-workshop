@@ -14,6 +14,10 @@ const json = (status, body) => new Response(JSON.stringify(body), {
 
 const DISABLED_BAN = '876000h'; // ~100 years
 
+// This function never uses live updates. Giving the client a dummy WebSocket stops
+// supabase-js from refusing to start on Node versions without a built-in WebSocket.
+class NoWebSocket { constructor() { throw new Error('Realtime is not used in this function'); } }
+
 export default async (req) => {
   if (req.method !== 'POST') return json(405, { error: 'Use POST.' });
 
@@ -22,7 +26,15 @@ export default async (req) => {
   const domain = process.env.LOGIN_DOMAIN || process.env.VITE_LOGIN_DOMAIN || 'dha-mt.local';
   if (!url || !serviceKey) return json(500, { error: 'User management is not set up yet: add SUPABASE_SERVICE_ROLE_KEY in Netlify.' });
 
-  const admin = createClient(url, serviceKey, { auth: { persistSession: false, autoRefreshToken: false } });
+  let admin;
+  try {
+    admin = createClient(url, serviceKey, {
+      auth: { persistSession: false, autoRefreshToken: false },
+      realtime: { transport: NoWebSocket },
+    });
+  } catch (e) {
+    return json(500, { error: 'Could not start: ' + (e?.message || e) });
+  }
 
   try {
     // 1. Who is calling? Verify their session token with Supabase.
