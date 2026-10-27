@@ -372,7 +372,7 @@ function SparesStage({ job, spares, current, canDemand, canProcure, canRemoveAny
     <>
       {spares.length > 0 ? (
         <div className="table-wrap">
-          <table className="spares-table">
+          <table className="spares-table stack">
             <thead><tr><th>Part</th><th>Part No.</th><th className="num">Qty</th><th>Source</th><th>Demanded</th><th>Approved</th><th>Received</th><th>Status</th>{editable && <th />}</tr></thead>
             <tbody>
               {spares.map((s) => (

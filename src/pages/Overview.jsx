@@ -168,7 +168,7 @@ export default function Overview() {
           <div className="section">
             <h2 className="section-title">Vehicles to watch</h2>
             <div className="card clip table-wrap">
-              <table>
+              <table className="stack">
                 <thead><tr><th>Vehicle</th><th className="num">Breakdowns (yr)</th><th className="num">Days off road (yr)</th><th className="num">Spend (yr)</th><th>BER ratio</th></tr></thead>
                 <tbody>
                   {watch.map(({ v, s, ratio }) => (

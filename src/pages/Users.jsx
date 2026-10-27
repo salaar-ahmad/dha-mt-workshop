@@ -184,7 +184,7 @@ export default function Users() {
       </div>
 
       <div className="card clip table-wrap section">
-        <table>
+        <table className="stack">
           <thead><tr><th>Name</th><th>Username</th><th>Role</th><th>Status</th><th>Last sign-in</th>{can.manageUsers && <th />}</tr></thead>
           <tbody>
             {state.users == null && !err && <tr className="empty-row"><td colSpan={6}>Loading logins…</td></tr>}

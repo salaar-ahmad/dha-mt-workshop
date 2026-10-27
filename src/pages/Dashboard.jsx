@@ -87,7 +87,7 @@ export default function Dashboard() {
         <div className="section">
           <h2 className="section-title">Off-Road Vehicles, by days in workshop</h2>
           <div className="card clip table-wrap">
-            <table>
+            <table className="stack">
               <thead><tr><th>Vehicle No</th><th>Type</th><th>Fault Reported</th><th>Status</th><th>Days in Workshop</th></tr></thead>
               <tbody>
                 {open.length === 0 && <tr className="empty-row"><td colSpan={5}>No vehicles in the workshop. Whole fleet is fit.</td></tr>}

@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import { Component, useEffect, useState } from 'react';
 import { HashRouter, MemoryRouter, Link, NavLink, Navigate, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import { useStore } from './lib/store.jsx';
 import { backend } from './lib/backend.js';
@@ -23,16 +23,25 @@ function Shell({ children }) {
   const loc = useLocation();
   const ws = workspaceFor(user.role);
   const nav = useNavigate();
+  const [menu, setMenu] = useState(false);
+  useEffect(() => { setMenu(false); }, [loc.pathname]);
+  const current = ws.nav.find((n) => (n.match ? n.match.test(loc.pathname) : loc.pathname === n.to));
   return (
     <div className="app-shell">
-      <header className="topbar">
+      <header className={`topbar${menu ? ' menu-open' : ''}`}>
         <div className="topbar-left">
           <Logo size={44} />
           <div className="topbar-brand">
             <b>DHA MT Workshop</b>
             <span>Mechanical Transport · Phase 6 &amp; 7, Islamabad</span>
+            {current && <em className="m-current">{current.label.replace('+ ', '')}</em>}
           </div>
         </div>
+        <button className="menu-btn" aria-label={menu ? 'Close menu' : 'Open menu'} aria-expanded={menu} onClick={() => setMenu((m) => !m)}>
+          {menu
+            ? <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round"><path d="M6 6l12 12M18 6L6 18" /></svg>
+            : <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round"><path d="M4 7h16M4 12h16M4 17h16" /></svg>}
+        </button>
         <nav className="topbar-nav">
           {ws.nav.map((n) => (
             <NavLink key={n.to} to={n.to}

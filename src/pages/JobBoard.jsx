@@ -21,9 +21,13 @@ function isToday(v) {
   return f(d) === f(new Date());
 }
 
+let lastStage = null; // remembers the phone stage tab while moving between pages
+
 export default function JobBoard() {
   const { data, idx, can } = useStore();
   const [q, setQ] = useState('');
+  const [stage, setStageRaw] = useState(lastStage);
+  const setStage = (k) => { lastStage = k; setStageRaw(k); };
   const query = q.trim().toLowerCase();
 
   const jobs = data.job_cards.filter((j) => {
@@ -47,12 +51,25 @@ export default function JobBoard() {
         </div>
       </div>
 
+      {(() => {
+        const counts = Object.fromEntries(COLS.map((c) => [c.key, jobs.filter(c.match).length]));
+        const active = stage || (COLS.find((c) => counts[c.key] > 0) || COLS[0]).key;
+        return (
+          <>
+            <div className="stage-tabs" role="tablist" aria-label="Stage">
+              {COLS.map((c) => (
+                <button key={c.key} role="tab" aria-selected={active === c.key} className={active === c.key ? 'on' : ''} onClick={() => setStage(c.key)}
+                  ref={(el) => { if (el && active === c.key) el.scrollIntoView({ block: 'nearest', inline: 'center' }); }}>
+                  <span className="dot" style={{ background: c.color }} />{c.label}<span className="n">{counts[c.key]}</span>
+                </button>
+              ))}
+            </div>
       <div className="board">
         {COLS.map((c) => {
           const list = jobs.filter(c.match).map((j) => ({ j, v: idx.vehicleById.get(j.vehicle_id), days: jobDays(j) }))
             .sort((a, b) => b.days - a.days);
           return (
-            <div className="col" key={c.key}>
+            <div className={`col${active === c.key ? '' : ' m-hide'}`} key={c.key}>
               <div className="col-head">
                 <div><span className="dot" style={{ background: c.color }} /><b>{c.label}</b></div>
                 <span className="col-count">{list.length}</span>
@@ -77,6 +94,9 @@ export default function JobBoard() {
           );
         })}
       </div>
+          </>
+        );
+      })()}
     </>
   );
 }

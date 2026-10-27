@@ -70,7 +70,7 @@ export default function Vehicles() {
       <div className="count-note">Showing {shown.length} of {data.vehicles.length} vehicles</div>
 
       <div className="card clip table-wrap">
-        <table>
+        <table className="stack">
           <thead>
             <tr><th>Vehicle No</th><th>Category</th><th>Make / Model</th><th>Year</th><th>Section</th><th>Current Status</th><th className="num">Breakdowns (yr)</th><th /></tr>
           </thead>

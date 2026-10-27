@@ -94,7 +94,7 @@ export default function Spares() {
       <div className="count-note">Showing {rows.length} of {all.length} demands{busy ? ' · saving…' : ''}</div>
 
       <div className="card clip table-wrap">
-        <table className="spares-table">
+        <table className="spares-table stack">
           <thead>
             <tr><th>Vehicle No</th><th>Part</th><th>Part No.</th><th className="num">Qty</th><th>Source</th><th>Demanded</th><th>Approved</th><th>Received</th><th>Status</th><th>Days Pending</th></tr>
           </thead>

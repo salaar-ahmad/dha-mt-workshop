@@ -409,3 +409,163 @@ p.diag{font-size:13px;line-height:1.45;margin:0 0 9px;color:var(--ink);white-spa
 .nav-link{padding:9px 12px;font-size:13.5px;white-space:nowrap}
 .user-chip{white-space:nowrap}
 @media (max-width:1280px){.topbar-brand span{display:none}}
+
+/* =====================================================================
+   Phone & small tablet layout
+   ===================================================================== */
+.menu-btn{display:none}
+.m-current{display:none}
+.stage-tabs{display:none}
+
+/* grid / flex children must be allowed to shrink, or wide content (tables)
+   pushes the column past the screen edge */
+.layout>*,.two-col>*,.grid-2>*,.grid-3>*,.kpi-grid>*,.step-content,.form-wrap,.form-card{min-width:0}
+.summary-grid div{min-width:0;overflow-wrap:anywhere}
+
+@media (max-width:760px){
+  /* ---- header: logo + page name + menu button; tabs open as a panel ---- */
+  .topbar{position:sticky;top:0;z-index:50;padding:8px 12px;min-height:58px;flex-wrap:nowrap;column-gap:10px}
+  .topbar .dha-logo{width:38px;height:38px}
+  .topbar-left{gap:10px;min-width:0;flex:1}
+  .topbar-brand{min-width:0}
+  .topbar-brand b{font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .topbar-brand span{display:none}
+  .m-current{display:block;font-style:normal;color:var(--green-100);font-size:12.5px;opacity:.9}
+  .menu-btn{display:flex;align-items:center;justify-content:center;width:44px;height:44px;border-radius:9px;border:1px solid var(--green-600);background:var(--green-700);color:#fff;cursor:pointer;flex-shrink:0}
+  .topbar-nav,.topbar-right{display:none}
+  .topbar.menu-open{flex-wrap:wrap}
+  .topbar.menu-open .topbar-nav{display:flex;flex-direction:column;gap:2px;width:100%;order:3;padding:8px 0 4px;border-top:1px solid var(--green-700);margin-top:8px}
+  .topbar.menu-open .nav-link{font-size:16px;padding:13px 14px;border-radius:8px}
+  .topbar.menu-open .topbar-right{display:flex;width:100%;order:4;justify-content:space-between;padding:10px 0 6px;border-top:1px solid var(--green-700)}
+  .user-chip{white-space:normal;min-width:0}
+  .signout{padding:10px 14px;font-size:14px}
+
+  .demo-banner{font-size:12px;padding:8px 12px}
+  .readonly-note{padding:7px 12px}
+  main{padding:16px 12px 70px}
+  .page-head{margin-bottom:18px;gap:12px}
+  .page-head h1{font-size:22px}
+  .page-head p{font-size:13.5px}
+  .head-actions{width:100%}
+  .head-actions>.btn,.head-actions>a.btn{flex:1}
+  .head-actions .search{max-width:none;min-width:0!important;flex:1 1 100%}
+  .section-title{font-size:15px}
+
+  /* ---- KPI tiles: two per row ---- */
+  .kpi-grid,.kpi-grid.tight{grid-template-columns:1fr 1fr;gap:10px}
+  .kpi{padding:14px}
+  .kpi .label{font-size:10.5px}
+  .kpi .value{font-size:26px;margin-top:4px}
+  .kpi .value.sm{font-size:20px}
+  .kpi .sub{font-size:11.5px}
+
+  /* ---- Job Board: one stage at a time, chosen from tabs ---- */
+  .stage-tabs{display:flex;gap:8px;overflow-x:auto;margin:0 -12px 14px;padding:2px 12px 6px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+  .stage-tabs::-webkit-scrollbar{display:none}
+  .stage-tabs button{display:flex;align-items:center;gap:7px;white-space:nowrap;border:1.5px solid var(--line);background:#fff;border-radius:20px;padding:9px 13px;font-size:13.5px;font-weight:700;color:var(--ink-soft);cursor:pointer}
+  .stage-tabs button .dot{width:8px;height:8px;border-radius:50%;display:inline-block}
+  .stage-tabs button .n{background:var(--bg-sunken);border-radius:10px;padding:1px 7px;font-size:12px;color:var(--ink)}
+  .stage-tabs button.on{background:var(--green-700);border-color:var(--green-700);color:#fff}
+  .stage-tabs button.on .n{background:rgba(255,255,255,.2);color:#fff}
+  .board{display:block;overflow:visible}
+  .col{max-width:none;min-width:0;padding:0;background:none}
+  .col.m-hide{display:none}
+  .col-head{display:none}
+  .job-card{padding:14px 16px}
+
+  /* ---- tables become cards ---- */
+  .table-wrap:has(table.stack){background:none;border:none;overflow:visible;border-radius:0}
+  table.stack thead{display:none}
+  table.stack,table.stack tbody{display:block;width:100%}
+  table.stack tr{display:block;background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 14px;margin-bottom:10px}
+  table.stack tr.row-over{background:var(--red-bg);border-color:#F1C4C4}
+  table.stack tr.row-over td,table.stack tr:hover td{background:none}
+  table.stack td{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:7px 0;border:none;text-align:right;min-height:0}
+  table.stack td::before{content:attr(data-label);font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.3px;color:var(--ink-faint);text-align:left;flex-shrink:0;max-width:45%}
+  table.stack td[data-label=""]::before{content:none}
+  table.stack td[data-label=""]{justify-content:flex-end}
+  table.stack td:first-child{font-size:15.5px;border-bottom:1px solid var(--line-soft);padding-bottom:9px;margin-bottom:3px;justify-content:flex-start;text-align:left;display:block}
+  table.stack td:first-child::before{content:none}
+  table.stack td.num{text-align:right}
+  table.stack tr.empty-row{text-align:center}
+  table.stack tr.empty-row td{display:block;text-align:center;border:none;margin:0;padding:18px 0}
+  table.stack .date-cell{justify-content:flex-end;flex-wrap:wrap}
+  table.stack .mini-ber{min-width:140px}
+  table.stack td>div:not(.date-cell):not(.mini-ber):not(.compact){text-align:right}
+  .spares-table.stack td{font-size:14px}
+
+  /* ---- forms & job card ---- */
+  .form-card{padding:16px}
+  .group{margin-bottom:20px}
+  .stepper{padding:18px 14px}
+  .step{gap:12px}
+  .step-rail{width:28px}
+  .step-dot{width:28px;height:28px;font-size:12px}
+  .step-title{font-size:15px}
+  .step-title-row{flex-direction:column;align-items:flex-start;gap:2px}
+  .step-meta{flex-wrap:wrap}
+  .summary-grid{gap:10px 18px;padding:12px}
+  .summary-grid div{flex:1 1 40%}
+  .step-actions{flex-direction:column;align-items:stretch}
+  .step-actions .btn{width:100%}
+  .step-actions .linkbtn{padding:8px 0;text-align:center}
+  .actions{flex-direction:column-reverse}
+  .actions .btn{width:100%}
+  .side-card{padding:18px}
+  .job-head h1,.profile h1{font-size:24px}
+  .profile{padding:16px}
+  .profile-right{width:100%}
+  .sub-form{padding:12px}
+  .unit-input .seg button{padding:10px 12px}
+  .fuel-btn{padding:13px 0}
+  .tick{padding:12px}
+
+  /* stop iPhone zooming in on small inputs */
+  input,select,textarea,.compact input[type=text],.compact input[type=number],.compact input[type=date],.compact select,.date-cell input[type=date]{font-size:16px!important}
+
+  /* ---- toolbars ---- */
+  .toolbar{flex-direction:column;align-items:stretch}
+  .toolbar-left{flex-direction:column;align-items:stretch}
+  .search{max-width:none!important;min-width:0}
+  .seg{overflow-x:auto;scrollbar-width:none}
+  .seg button{flex:1 0 auto;padding:11px 12px}
+  select.age{width:100%}
+  .summary-row{gap:8px}
+  .sum-chip{padding:9px 12px;flex:1 1 auto}
+
+  /* ---- timeline / charts ---- */
+  .tl-item{gap:10px}
+  .tl-top{flex-direction:column;gap:2px}
+  .tl-cost{font-size:12px}
+  .ber-row{flex-direction:column}
+  .legend{gap:6px 14px;font-size:12.5px}
+
+  /* ---- modals: nearly full screen ---- */
+  .modal-bg{padding:10px;align-items:flex-start}
+  .modal{padding:18px;border-radius:12px}
+  .modal h2{font-size:18px;margin-bottom:14px}
+
+  .login-card{padding:24px}
+  .toast{bottom:16px;width:calc(100% - 24px);text-align:center}
+}
+
+/* printable pages on a phone screen: fit the width (printing itself stays A4) */
+@media screen and (max-width:820px){
+  .print-body{padding:0 0 30px}
+  .print-bar{padding:10px 12px;margin:0}
+  .page{width:auto;min-height:0;margin:0 8px;padding:20px 16px}
+  .ph{flex-direction:column;gap:8px}
+  .ph-right{text-align:left}
+  .fgrid{grid-template-columns:1fr 1fr}
+  .f.wide{grid-column:span 2}
+  .page .table-wrap,.page table{display:block;overflow-x:auto}
+  .sig-row{grid-template-columns:1fr 1fr;row-gap:24px}
+  .p-checklist{grid-template-columns:1fr}
+}
+
+@media (max-width:760px){
+  .head-actions{flex-wrap:wrap}
+  .head-actions>.btn,.head-actions>a.btn{flex:1 1 40%;font-size:14px;padding:12px 10px}
+  .head-actions>.btn-primary{flex-basis:100%;order:-1}
+  .print-bar span>span{display:none}
+}
