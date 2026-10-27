@@ -1,0 +1,4 @@
+vehicle_no,category,make,model,year,section,chassis_no,engine_no,meter_unit,current_value
+DHA-614,E&P Plant,Komatsu,D65 Dozer,2014,Phase 6 Workshop,,,hrs,4200000
+DHA-722,LTV,Toyota,Hilux,2019,Phase 7 HQ,,,km,6500000
+DHA-981,HTV,Hino,Dump Truck,2017,Phase 6 Workshop,,,km,7800000
