@@ -150,5 +150,5 @@ async function log(admin, actor, action, target, detail) {
   await admin.from('user_admin_log').insert({ actor_id: actor.id, actor_name: actor.name, action, target, detail });
 }
 
-const ROLE_TEXT = { ad_wksp: 'AD Wksp', am_wksp: 'AM Wksp', mt_clerk: 'MT Clerk', proc_clerk: 'Procurement Clerk', ceo: 'CEO' };
+const ROLE_TEXT = { dir_wksp: 'Director Wksp', ad_wksp: 'AD Wksp', am_wksp: 'AM Wksp', mt_clerk: 'MT Clerk', proc_clerk: 'Procurement Clerk', ceo: 'CEO' };
 const roleText = (r) => ROLE_TEXT[r] || r || 'none';

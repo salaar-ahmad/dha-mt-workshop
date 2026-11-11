@@ -1,5 +1,6 @@
 // Logins and what each one can do. Role keys must match the `role` column in Supabase `profiles`.
 export const ROLES = {
+  dir_wksp:   { label: 'Director Wksp',      group: 'Admin' },
   ad_wksp:    { label: 'AD Wksp',            group: 'Admin' },
   am_wksp:    { label: 'AM Wksp',            group: 'Admin' },
   mt_clerk:   { label: 'MT Clerk',           group: 'Clerk' },
@@ -7,7 +8,7 @@ export const ROLES = {
   ceo:        { label: 'CEO',                group: 'View only' },
 };
 
-const ADMINS = ['ad_wksp', 'am_wksp'];
+const ADMINS = ['dir_wksp', 'ad_wksp', 'am_wksp'];
 
 export function permsFor(role) {
   const r = role || '';
@@ -25,7 +26,7 @@ export function permsFor(role) {
     deleteJob: admin,
     exec: true,                                // everyone can see the Overview
     viewUsers: admin,                          // see the Users page
-    manageUsers: r === 'ad_wksp',              // create logins, change roles, reset passwords, disable
+    manageUsers: r === 'dir_wksp' || r === 'ad_wksp',              // create logins, change roles, reset passwords, disable
   };
 }
 
@@ -45,6 +46,7 @@ const NAV_ADMIN = [...NAV_ALL, { to: '/users', label: 'Users' }];
 const ALL_PAGES = [/^\/$/, /^\/overview$/, /^\/dashboard$/, /^\/jobs(\/[^/]+)?$/, /^\/new$/, /^\/vehicles(\/[^/]+)?$/, /^\/spares$/, /^\/print\/(job|release)\/[^/]+$/];
 
 export const WORKSPACE = {
+  dir_wksp: { home: '/dashboard', nav: NAV_ADMIN, pages: [...ALL_PAGES, /^\/users$/] },
   ad_wksp: { home: '/dashboard', nav: NAV_ADMIN, pages: [...ALL_PAGES, /^\/users$/] },
   am_wksp: { home: '/dashboard', nav: NAV_ADMIN, pages: [...ALL_PAGES, /^\/users$/] },
   ceo:     { home: '/overview',  nav: NAV_ALL, pages: ALL_PAGES.filter((re) => !re.test('/new')) },

@@ -8,13 +8,14 @@ import { fmtDateTime } from '../lib/format.js';
 import { Modal, askConfirm } from '../components/ui.jsx';
 
 const ROLE_HELP = {
+  dir_wksp: 'Full access. Manages logins and roles.',
   ad_wksp: 'Full access. Manages logins and roles.',
   am_wksp: 'Full workshop access. Can view logins but not change them.',
   mt_clerk: 'Job cards, all stages, spares demands, vehicle list. Spares view only.',
   proc_clerk: 'Spares Register only: approve, receive, enter costs.',
   ceo: 'View only. Opens on the Overview.',
 };
-const ROLE_CHIP = { ad_wksp: 'final', am_wksp: 'inspected', mt_clerk: 'repair', proc_clerk: 'awaiting', ceo: 'received' };
+const ROLE_CHIP = { dir_wksp: 'final', ad_wksp: 'final', am_wksp: 'inspected', mt_clerk: 'repair', proc_clerk: 'awaiting', ceo: 'received' };
 
 function RolePicker({ value, onChange, disabled }) {
   return (
@@ -101,7 +102,7 @@ function EditModal({ u, self, onClose, onDone }) {
         <input type="text" value={f.full_name} onChange={(e) => setF({ ...f, full_name: e.target.value })} /></div>
       <div className="field"><label>Role</label>
         {self
-          ? <div className="alert info" style={{ marginBottom: 0 }}>You cannot change your own role. Another AD Wksp has to do it.</div>
+          ? <div className="alert info" style={{ marginBottom: 0 }}>You cannot change your own role. Another Director Wksp or AD Wksp has to do it.</div>
           : <RolePicker value={f.role} onChange={(r) => setF({ ...f, role: r })} />}
       </div>
       <div className="actions" style={{ marginTop: 18 }}>
@@ -160,7 +161,7 @@ export default function Users() {
       <div className="page-head">
         <div>
           <h1>Users</h1>
-          <p>{can.manageUsers ? 'Create logins, set roles, reset passwords and disable accounts.' : 'Who can sign in and what role they have. Only AD Wksp can make changes.'}</p>
+          <p>{can.manageUsers ? 'Create logins, set roles, reset passwords and disable accounts.' : 'Who can sign in and what role they have. Only Director Wksp or AD Wksp can make changes.'}</p>
         </div>
         {can.manageUsers && <button className="btn btn-primary" onClick={() => setCreating(true)}>+ New Login</button>}
       </div>

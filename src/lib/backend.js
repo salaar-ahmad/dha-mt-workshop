@@ -7,6 +7,7 @@ export const TABLES = ['vehicles', 'job_cards', 'spares', 'job_events'];
 
 // Demo-only sample logins, one per role
 const DEMO_USERS = [
+  { id: 'd-dir', username: 'dirwksp', name: 'Brig (R) Tariq Mahmood', role: 'dir_wksp' },
   { id: 'd-ad', username: 'adwksp', name: 'Maj (R) Imran Sheikh', role: 'ad_wksp' },
   { id: 'd-am', username: 'amwksp', name: 'Capt (R) Usman Ali', role: 'am_wksp' },
   { id: 'd-mt', username: 'mtclerk', name: 'Zubair Khan', role: 'mt_clerk' },
@@ -169,7 +170,7 @@ function localBackend() {
       checkUserAction(actor, action, p, logins.users);
       const target = p.id ? logins.users.find((u) => u.id === p.id) : null;
       const addLog = (a, t, d = '') => logins.log.unshift({ id: uuid(), at: new Date().toISOString(), actor_name: actor.name, action: a, target: t, detail: d });
-      const RT = { ad_wksp: 'AD Wksp', am_wksp: 'AM Wksp', mt_clerk: 'MT Clerk', proc_clerk: 'Procurement Clerk', ceo: 'CEO' };
+      const RT = { dir_wksp: 'Director Wksp', ad_wksp: 'AD Wksp', am_wksp: 'AM Wksp', mt_clerk: 'MT Clerk', proc_clerk: 'Procurement Clerk', ceo: 'CEO' };
       if (action === 'list') return { users: structuredClone(logins.users), log: logins.log.slice(0, 30) };
       if (action === 'create') {
         const username = p.username.trim().toLowerCase();

@@ -31,6 +31,7 @@ Users log in with a username. Behind the scenes the username becomes `username@d
 
 | Role key | Login | Can do |
 |---|---|---|
+| `dir_wksp` | Director Wksp | Same as AD Wksp, including managing logins |
 | `ad_wksp` | AD Wksp | Everything: open and progress job cards, spares, add/edit vehicles, correct completed stages, delete a mistaken job card |
 | `am_wksp` | AM Wksp | Same as AD Wksp |
 | `mt_clerk` | MT Clerk | Open job cards at the gate, record inspection, repair, final inspection and release, raise spares demands, add/edit/import vehicles, follow spares progress (view only) |
@@ -39,7 +40,7 @@ Users log in with a username. Behind the scenes the username becomes `username@d
 
 Suggested usernames: `adwksp`, `amwksp`, `mtclerk`, `procclerk`, `ceo` (emails `adwksp@dha-mt.local` etc.).
 **Workspaces.** Each login sees only its own tabs:
-- AD Wksp, AM Wksp: all tabs (Overview, Dashboard, Job Board, Vehicle Master List, Spares Register)
+- Director Wksp, AD Wksp, AM Wksp: all tabs (Overview, Dashboard, Job Board, Vehicle Master List, Spares Register)
 - CEO: all tabs, view only
 - MT Clerk: Job Board, + New Job Card, Vehicle Master List (can add, edit and import vehicles), Spares Register (view only)
 - Procurement Clerk: Spares Register only
@@ -61,11 +62,11 @@ You can also add vehicles one at a time in the app (Vehicle Master List → + Ad
 
 ---
 
-## Managing logins (AD Wksp)
+## Managing logins (Director Wksp, AD Wksp)
 
 After the first setup, logins are managed inside the app from the **Users** tab:
 
-| | AD Wksp | AM Wksp | Everyone else |
+| | Director Wksp / AD Wksp | AM Wksp | Everyone else |
 |---|---|---|---|
 | See the list of logins and recent changes | Yes | Yes | No |
 | Create a login, change name or role | Yes | No | No |
@@ -73,8 +74,8 @@ After the first setup, logins are managed inside the app from the **Users** tab:
 | Disable / enable a login | Yes | No | No |
 
 Safety rules (enforced on the server, not just the screen):
-- AD Wksp cannot change his own role or disable his own login.
-- The last active AD Wksp cannot be demoted or disabled, so the system is never left without an admin.
+- Director Wksp and AD Wksp cannot change their own role or disable their own login.
+- The last active Director Wksp / AD Wksp cannot be demoted or disabled, so the system is never left without an admin.
 - Nobody can change roles from the browser directly: the `profiles` table has no edit permission; changes go only through the server function.
 - A disabled login is signed out and cannot sign in again; its past entries stay on the records.
 - Every create, role change, password reset and disable is recorded with who did it and when.

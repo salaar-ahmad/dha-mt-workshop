@@ -6,6 +6,7 @@ create extension if not exists pgcrypto;
 
 -- ---------------------------------------------------------------
 -- Users / roles
+--   dir_wksp   : Director Wksp. Same as AD Wksp
 --   ad_wksp    : AD Wksp. Everything, incl. corrections and deleting job cards
 --   am_wksp    : AM Wksp. Same as AD Wksp
 --   mt_clerk   : MT Clerk. Opens job cards, records every stage, raises spares demands
@@ -23,7 +24,7 @@ update public.profiles set role = case role
   when 'clerk' then 'mt_clerk' when 'incharge' then 'am_wksp' when 'admin' then 'ad_wksp' when 'viewer' then 'ceo' else role end
   where role in ('clerk','incharge','admin','viewer');
 alter table public.profiles add constraint profiles_role_check
-  check (role in ('ad_wksp','am_wksp','mt_clerk','proc_clerk','ceo'));
+  check (role in ('dir_wksp','ad_wksp','am_wksp','mt_clerk','proc_clerk','ceo'));
 alter table public.profiles alter column role set default 'mt_clerk';
 alter table public.profiles add column if not exists active boolean not null default true;
 
@@ -230,11 +231,11 @@ returns text language sql stable security definer set search_path = public as $$
   select role from public.profiles where id = auth.uid() and active;
 $$;
 create or replace function public.is_writer()        -- records workshop stages
-returns boolean language sql stable as $$ select coalesce(public.my_role() in ('ad_wksp','am_wksp','mt_clerk'), false) $$;
+returns boolean language sql stable as $$ select coalesce(public.my_role() in ('dir_wksp','ad_wksp','am_wksp','mt_clerk'), false) $$;
 create or replace function public.is_procurer()      -- approves / receives spares
-returns boolean language sql stable as $$ select coalesce(public.my_role() in ('ad_wksp','am_wksp','proc_clerk'), false) $$;
+returns boolean language sql stable as $$ select coalesce(public.my_role() in ('dir_wksp','ad_wksp','am_wksp','proc_clerk'), false) $$;
 create or replace function public.is_wksp_admin()    -- corrections and deletes
-returns boolean language sql stable as $$ select coalesce(public.my_role() in ('ad_wksp','am_wksp'), false) $$;
+returns boolean language sql stable as $$ select coalesce(public.my_role() in ('dir_wksp','ad_wksp','am_wksp'), false) $$;
 
 alter table public.profiles   enable row level security;
 alter table public.vehicles   enable row level security;
