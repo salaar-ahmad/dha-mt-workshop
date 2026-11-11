@@ -5,7 +5,7 @@ import { backend } from '../lib/backend.js';
 import { CATEGORIES, SECTIONS } from '../lib/config.js';
 import { downloadCSV } from '../lib/csv.js';
 
-const TEMPLATE_HEADERS = ['Vehicle No', 'Category', 'Make', 'Model', 'Year', 'Section', 'Chassis No', 'Engine No', 'Meter (km/hrs)', 'Current Value (Rs)'];
+const TEMPLATE_HEADERS = ['Vehicle No', 'Category', 'Make', 'Model', 'Year', 'Section', 'Chassis No', 'Engine No', 'Meter (km/hrs)', 'Current Value (Rs)', 'Notes'];
 
 // Column names people actually use -> our fields
 const COLS = {
@@ -19,6 +19,7 @@ const COLS = {
   engine_no: ['engineno', 'engine'],
   meter_unit: ['meter', 'meterunit', 'meterkmhrs', 'unit_meter', 'odometerunit', 'reads'],
   current_value: ['currentvalue', 'currentvaluers', 'value', 'valuers', 'bookvalue'],
+  notes: ['notes', 'note', 'remarks'],
 };
 const norm = (h) => String(h || '').toLowerCase().replace(/[^a-z0-9]/g, '');
 
@@ -92,7 +93,7 @@ export default function ImportVehicles({ onClose }) {
           fields: {
             category: category || old?.category || (catRaw ? null : 'LTV'),
             make: get('make'), model: get('model'), year,
-            section: get('section'), chassis_no: get('chassis_no'), engine_no: get('engine_no'),
+            section: get('section'), chassis_no: get('chassis_no'), engine_no: get('engine_no'), notes: get('notes'),
             meter_unit: normMeter(get('meter_unit'), category || old?.category),
             current_value: valRaw ? Number(valRaw) : null,
             _meterGiven: !!get('meter_unit'),
@@ -120,7 +121,7 @@ export default function ImportVehicles({ onClose }) {
         if (r.old) {
           // only overwrite cells that have a value in the file
           const patch = {};
-          for (const k of ['category', 'make', 'model', 'year', 'section', 'chassis_no', 'engine_no', 'current_value']) {
+          for (const k of ['category', 'make', 'model', 'year', 'section', 'chassis_no', 'engine_no', 'current_value', 'notes']) {
             if (f[k] !== '' && f[k] != null) patch[k] = f[k];
           }
           if (f._meterGiven) patch.meter_unit = f.meter_unit;
@@ -129,7 +130,7 @@ export default function ImportVehicles({ onClose }) {
           await backend.insert('vehicles', {
             vehicle_no: r.vehicle_no, category: f.category || 'LTV', make: f.make, model: f.model, year: f.year,
             section: f.section || SECTIONS[0], chassis_no: f.chassis_no || null, engine_no: f.engine_no || null,
-            meter_unit: f.meter_unit, current_value: f.current_value, is_ber: false,
+            meter_unit: f.meter_unit, current_value: f.current_value, is_ber: false, notes: f.notes || null,
           });
         }
         ok++;
