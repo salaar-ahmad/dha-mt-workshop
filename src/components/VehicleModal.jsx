@@ -45,7 +45,8 @@ export default function VehicleModal({ vehicle, initialNo = '', onClose, onSaved
         <div className="grid-2 group">
           <div>
             <label className="flabel">Section / Phase</label>
-            <select value={f.section} onChange={set('section')}>
+            <select value={f.section || ''} onChange={set('section')}>
+              <option value="">(none)</option>
               {[...new Set([...SECTIONS, f.section].filter(Boolean))].map((s) => <option key={s}>{s}</option>)}
             </select>
           </div>

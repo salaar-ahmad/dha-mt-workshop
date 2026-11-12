@@ -132,7 +132,7 @@ export default function ImportVehicles({ onClose }) {
         } else {
           await backend.insert('vehicles', {
             vehicle_no: r.vehicle_no, category: f.category || 'LTV', make: f.make, model: f.model, year: f.year,
-            section: f.section || SECTIONS[0], chassis_no: f.chassis_no || null, engine_no: f.engine_no || null,
+            section: f.section || '', chassis_no: f.chassis_no || null, engine_no: f.engine_no || null,
             meter_unit: f.meter_unit, current_value: f.current_value, is_ber: false, is_unfit: !!f.is_unfit, notes: f.notes || null,
           });
         }
