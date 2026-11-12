@@ -83,10 +83,15 @@ export function finalInspection(user, job, f, pass) {
     { ...patch, fail_count: (job.fail_count || 0) + 1, repair_completed_at: null });
 }
 
-export const releaseVehicle = (user, job, f) => move(job, 'released', user, f.released_at, f.release_remarks || null, {
-  released_at: f.released_at, meter_out: f.meter_out, fuel_out: f.fuel_out, handed_to: f.handed_to,
-  release_checks: f.release_checks, release_remarks: f.release_remarks || null, released_by: user?.name || null,
-});
+export async function releaseVehicle(user, job, f) {
+  const j = await move(job, 'released', user, f.released_at, f.release_remarks || null, {
+    released_at: f.released_at, meter_out: f.meter_out, fuel_out: f.fuel_out, handed_to: f.handed_to,
+    release_checks: f.release_checks, release_remarks: f.release_remarks || null, released_by: user?.name || null,
+  });
+  // A released vehicle is back on the road
+  await backend.update('vehicles', job.vehicle_id, { is_unfit: false });
+  return j;
+}
 
 // Corrections by incharge/admin: edit fields without changing the stage
 export const correctJob = (job, patch) => backend.update('job_cards', job.id, patch);
@@ -101,7 +106,7 @@ export async function saveVehicle(v) {
     year: v.year ? Number(v.year) : null, section: v.section, chassis_no: v.chassis_no || null,
     engine_no: v.engine_no || null, meter_unit: v.meter_unit,
     current_value: v.current_value === '' || v.current_value == null ? null : Number(v.current_value),
-    is_ber: !!v.is_ber, notes: v.notes || null,
+    is_ber: !!v.is_ber, is_unfit: !!v.is_unfit, notes: v.notes || null,
   };
   if (v.id) return backend.update('vehicles', v.id, row);
   return backend.insert('vehicles', row);

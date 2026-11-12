@@ -19,7 +19,8 @@ export default function Dashboard() {
 
   const strength = data.vehicles.filter((v) => !v.is_ber);
   const offRoadIds = new Set(open.map((o) => o.j.vehicle_id));
-  const avail = strength.length ? Math.round(((strength.length - strength.filter((v) => offRoadIds.has(v.id)).length) / strength.length) * 100) : 0;
+  const unfitCount = strength.filter((v) => v.is_unfit && !offRoadIds.has(v.id)).length;
+  const avail = strength.length ? Math.round(((strength.length - strength.filter((v) => v.is_unfit || offRoadIds.has(v.id)).length) / strength.length) * 100) : 0;
 
   const catCount = {};
   for (const o of open) if (o.v) catCount[o.v.category] = (catCount[o.v.category] || 0) + 1;
@@ -78,7 +79,7 @@ export default function Dashboard() {
           <Link className="kpi" to="/vehicles" style={{ borderTopColor: 'var(--good)', color: 'inherit' }}>
             <div className="label">Fleet Availability</div>
             <div className="value">{avail}%</div>
-            <div className="sub">of {strength.length} vehicles on strength</div>
+            <div className="sub">of {strength.length} vehicles on strength{unfitCount ? ` · ${unfitCount} unfit` : ''}</div>
           </Link>
         </div>
       </div>

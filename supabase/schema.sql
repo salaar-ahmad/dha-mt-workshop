@@ -76,10 +76,12 @@ create table if not exists public.vehicles (
   meter_unit text not null default 'km' check (meter_unit in ('km','hrs')),
   current_value numeric,          -- Rs, used for the BER indicator
   is_ber boolean not null default false,
+  is_unfit boolean not null default false,   -- off road but not in the workshop
   notes text,
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
 );
+alter table public.vehicles add column if not exists is_unfit boolean not null default false;
 
 -- ---------------------------------------------------------------
 -- Job cards: one per workshop visit. Stage fields are filled in order.

@@ -8,7 +8,7 @@ export default function VehicleModal({ vehicle, initialNo = '', onClose, onSaved
   const { can } = useStore();
   const [f, setF] = useState(() => vehicle ? { ...vehicle, year: vehicle.year ?? '', current_value: vehicle.current_value ?? '' } : {
     vehicle_no: initialNo.toUpperCase(), category: 'LTV', make: '', model: '', year: '', section: SECTIONS[0],
-    chassis_no: '', engine_no: '', meter_unit: 'km', current_value: '', is_ber: false, notes: '',
+    chassis_no: '', engine_no: '', meter_unit: 'km', current_value: '', is_ber: false, is_unfit: false, notes: '',
   });
   const [err, setErr] = useState('');
   const [busy, run] = useAction();
@@ -66,6 +66,10 @@ export default function VehicleModal({ vehicle, initialNo = '', onClose, onSaved
           <label className="flabel">Notes</label>
           <textarea value={f.notes || ''} onChange={set('notes')} style={{ minHeight: 60 }} />
         </div>
+        <label className={`tick${f.is_unfit ? ' on' : ''}`} style={{ maxWidth: 360 }}>
+          <input type="checkbox" checked={!!f.is_unfit} onChange={(e) => set('is_unfit')(e.target.checked)} />
+          Unfit / off road (not in the workshop)
+        </label>
         {vehicle && can.declareBer && (
           <label className={`tick${f.is_ber ? ' on' : ''}`} style={{ maxWidth: 360 }}>
             <input type="checkbox" checked={!!f.is_ber} onChange={(e) => set('is_ber')(e.target.checked)} />

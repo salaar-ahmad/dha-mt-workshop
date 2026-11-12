@@ -24,7 +24,8 @@ export default function Vehicles() {
   const shown = rows.filter(({ v, st }) => {
     if (cat !== 'all' && v.category !== cat) return false;
     if (stateF === 'off' && !st.job) return false;
-    if (stateF === 'fit' && (st.job || v.is_ber)) return false;
+    if (stateF === 'fit' && (st.job || v.is_ber || v.is_unfit)) return false;
+    if (stateF === 'unfit' && (st.job || v.is_ber || !v.is_unfit)) return false;
     if (stateF === 'ber' && !v.is_ber) return false;
     if (query && !`${v.vehicle_no} ${vehicleTitle(v)} ${v.section} ${v.chassis_no || ''}`.toLowerCase().includes(query)) return false;
     return true;
@@ -64,6 +65,7 @@ export default function Vehicles() {
           <option value="all">Any status</option>
           <option value="off">In workshop</option>
           <option value="fit">Fit / on road</option>
+          <option value="unfit">Unfit</option>
           <option value="ber">BER</option>
         </select>
       </div>

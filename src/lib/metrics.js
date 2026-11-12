@@ -13,6 +13,7 @@ export const STATUS = {
 };
 export const VEHICLE_FIT = { label: 'Fit', chip: 'released' };
 export const VEHICLE_BER = { label: 'BER', chip: 'ber' };
+export const VEHICLE_UNFIT = { label: 'Unfit', chip: 'awaiting' };
 
 export const OPEN_STATUSES = ['received', 'inspected', 'awaiting_spares', 'under_repair', 'final_inspection', 'ready'];
 export const isOpen = (job) => OPEN_STATUSES.includes(job.status);
@@ -69,6 +70,7 @@ export function vehicleState(idx, v) {
   const open = openJobFor(idx, v.id);
   if (open) return { ...STATUS[open.status], job: open };
   if (v.is_ber) return VEHICLE_BER;
+  if (v.is_unfit) return VEHICLE_UNFIT;
   return VEHICLE_FIT;
 }
 

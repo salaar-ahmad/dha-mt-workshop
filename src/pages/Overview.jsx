@@ -50,7 +50,9 @@ export default function Overview() {
   const strength = data.vehicles.filter((v) => !v.is_ber);
   const open = data.job_cards.filter(isOpen);
   const offIds = new Set(open.map((j) => j.vehicle_id));
-  const avail = strength.length ? Math.round(((strength.length - strength.filter((v) => offIds.has(v.id)).length) / strength.length) * 100) : 0;
+  const offCount = strength.filter((v) => v.is_unfit || offIds.has(v.id)).length;
+  const unfitCount = strength.filter((v) => v.is_unfit && !offIds.has(v.id)).length;
+  const avail = strength.length ? Math.round(((strength.length - offCount) / strength.length) * 100) : 0;
   const overdue = open.filter((j) => jobDays(j) >= OVERDUE_DAYS).sort((a, b) => jobDays(b) - jobDays(a));
 
   // Released in the last 90 days: average turnaround and where the time went
@@ -107,7 +109,7 @@ export default function Overview() {
           <div className="kpi" style={{ borderTopColor: avail >= 85 ? 'var(--good)' : avail >= 70 ? 'var(--amber)' : 'var(--red)' }}>
             <div className="label">Fleet Availability</div>
             <div className="value">{avail}%</div>
-            <div className="sub">{strength.length - offIds.size} of {strength.length} vehicles fit</div>
+            <div className="sub">{strength.length - offCount} of {strength.length} vehicles fit{unfitCount ? ` · ${unfitCount} unfit` : ''}</div>
           </div>
           <div className="kpi" style={{ borderTopColor: 'var(--orange)' }}>
             <div className="label">Off Road Now</div>
